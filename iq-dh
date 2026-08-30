@@ -1,0 +1,30 @@
+from random import randint
+
+# Quadratic field, ring of integers, and ideal class group
+D = -2614159
+K = QuadraticField(D)
+O = K.ring_of_integers()
+Cl = O.class_group()
+
+# Public generator and exponent bound
+g_class = Cl.gens()[0]
+c = 100
+
+# Each party chooses a random private exponent
+a = randint(1, c)
+b = randint(1, c)
+
+# Compute public keys
+public_A = g_class^a
+public_B = g_class^b
+
+# Compute shared secrets
+secret_A = public_B^a
+secret_B = public_A^b
+
+print("Party A's public ideal class:", public_A)
+print("Party B's public ideal class:", public_B)
+print("Party A's computed secret ideal class:", secret_A)
+print("Party B's computed secret ideal class:", secret_B)
+print("Shared secrets match:", secret_A == secret_B)
+print("Class group order:", Cl.order())
